@@ -5,7 +5,6 @@ import com.carshowroom.request.CarRequest;
 import com.carshowroom.response.ApiResponse;
 
 import java.util.List;
-import java.util.Map;
 
 public interface CarService {
 
@@ -18,6 +17,5 @@ public interface CarService {
     ApiResponse<String> deleteCar(Long carId);
     ApiResponse<String> updateCarStatus(Long carId, String status);
     List<Car> searchCarByMake(String make);
-    // Add more methods as needed
 
 }
