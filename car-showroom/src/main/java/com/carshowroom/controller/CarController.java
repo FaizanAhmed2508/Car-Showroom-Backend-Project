@@ -23,36 +23,96 @@ public class CarController {
     // Add a new car
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<String>> addCar(@Valid @RequestBody CarRequest request) {
-        // TODO: implement
-        return null;
+
+        ApiResponse<String> response = carService.addCar(request);
+
+        if (CarShowroomConstants.STATUS_SUCCESS.equals(response.getStatus())) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     // Get car by ID
     @GetMapping("/{carId}")
     public ResponseEntity<ApiResponse<Car>> getCarById(@PathVariable Long carId) {
-        // TODO: implement
-        return null;
+
+        ApiResponse<Car> response = new ApiResponse<>();
+
+        // Edge case: invalid ID
+        if (carId <= 0) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(CarShowroomConstants.INVALID_CAR_ID);
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        response = carService.getCarById(carId);
+
+        if (CarShowroomConstants.STATUS_SUCCESS.equals(response.getStatus())) {
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     // Get car by VIN
     @GetMapping("/vin/{vin}")
     public ResponseEntity<ApiResponse<Car>> getCarByVin(@PathVariable String vin) {
-        // TODO: implement
-        return null;
+
+        ApiResponse<Car> response = new ApiResponse<>();
+
+        // Edge case: blank VIN
+        if (vin == null || vin.trim().isEmpty()) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage("VIN cannot be blank");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        response = carService.getCarByVin(vin);
+
+        if (CarShowroomConstants.STATUS_SUCCESS.equals(response.getStatus())) {
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     // Get all cars
     @GetMapping
     public ResponseEntity<ApiResponse<List<Car>>> getAllCars() {
-        // TODO: implement
-        return null;
+
+        ApiResponse<List<Car>> response = carService.getAllCars();
+
+        if (CarShowroomConstants.STATUS_SUCCESS.equals(response.getStatus())) {
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     // Get cars by status
     @GetMapping("/status/{status}")
     public ResponseEntity<ApiResponse<List<Car>>> getCarsByStatus(@PathVariable String status) {
-        // TODO: implement
-        return null;
+
+        ApiResponse<List<Car>> response = new ApiResponse<>();
+
+        // Edge case: blank status
+        if (status == null || status.trim().isEmpty()) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage("Status cannot be blank");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        response = carService.getCarsByStatus(status);
+
+        if (CarShowroomConstants.STATUS_SUCCESS.equals(response.getStatus())) {
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     // Update car details
@@ -60,15 +120,47 @@ public class CarController {
     public ResponseEntity<ApiResponse<String>> updateCar(
             @PathVariable Long carId,
             @RequestBody CarRequest request) {
-        // TODO: implement
-        return null;
+
+        ApiResponse<String> response = new ApiResponse<>();
+
+        // Edge case: invalid ID
+        if (carId <= 0) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(CarShowroomConstants.INVALID_CAR_ID);
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        response = carService.updateCar(carId, request);
+
+        if (CarShowroomConstants.STATUS_SUCCESS.equals(response.getStatus())) {
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     // Delete car (soft delete)
     @DeleteMapping("/delete")
     public ResponseEntity<ApiResponse<String>> deleteCar(@RequestParam Long carId) {
-        // TODO: implement
-        return null;
+
+        ApiResponse<String> response = new ApiResponse<>();
+
+        // Edge case: invalid ID
+        if (carId == null || carId <= 0) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(CarShowroomConstants.INVALID_CAR_ID);
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        response = carService.deleteCar(carId);
+
+        if (CarShowroomConstants.STATUS_SUCCESS.equals(response.getStatus())) {
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     // Update car status
@@ -76,15 +168,62 @@ public class CarController {
     public ResponseEntity<ApiResponse<String>> updateCarStatus(
             @PathVariable Long carId,
             @RequestParam String status) {
-        // TODO: implement
-        return null;
+
+        ApiResponse<String> response = new ApiResponse<>();
+
+        // Edge case: invalid ID
+        if (carId <= 0) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(CarShowroomConstants.INVALID_CAR_ID);
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Edge case: blank status
+        if (status == null || status.trim().isEmpty()) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage("Status cannot be blank");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        response = carService.updateCarStatus(carId, status);
+
+        if (CarShowroomConstants.STATUS_SUCCESS.equals(response.getStatus())) {
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     // Search car by make
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<Car>>> searchCarByMake(@RequestParam String make) {
-        // TODO: implement
-        return null;
+
+        ApiResponse<List<Car>> response = new ApiResponse<>();
+
+        // Edge case: blank make
+        if (make == null || make.trim().isEmpty()) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage("Make cannot be blank");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        List<Car> cars = carService.searchCarByMake(make);
+
+        if (cars == null || cars.isEmpty()) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(CarShowroomConstants.CAR_NOT_FOUND);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        response.setStatus(CarShowroomConstants.STATUS_SUCCESS);
+        response.setMessage(CarShowroomConstants.CARS_FETCHED_SUCCESSFULLY);
+        response.setData(cars);
+
+        return ResponseEntity.ok(response);
     }
 
 }
