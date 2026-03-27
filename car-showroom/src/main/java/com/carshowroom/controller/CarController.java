@@ -42,7 +42,7 @@ public class CarController {
         // Edge case: invalid ID
         if (carId <= 0) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
-            response.setMessage(CarShowroomConstants.INVALID_CAR_ID);
+            response.setMessage(CarShowroomConstants.CAR_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
             return ResponseEntity.badRequest().body(response);
         }
@@ -126,7 +126,7 @@ public class CarController {
         // Edge case: invalid ID
         if (carId <= 0) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
-            response.setMessage(CarShowroomConstants.INVALID_CAR_ID);
+            response.setMessage(CarShowroomConstants.CAR_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
             return ResponseEntity.badRequest().body(response);
         }
@@ -174,7 +174,7 @@ public class CarController {
         // Edge case: invalid ID
         if (carId <= 0) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
-            response.setMessage(CarShowroomConstants.INVALID_CAR_ID);
+            response.setMessage(CarShowroomConstants.CAR_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
             return ResponseEntity.badRequest().body(response);
         }

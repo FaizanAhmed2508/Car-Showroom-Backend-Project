@@ -164,11 +164,9 @@ public class CarServiceImpl implements CarService {
                             CarShowroomConstants.CAR_NOT_FOUND_WITH_ID + carId));
 
             // Check if new VIN belongs to a different car
-            carRepository.findByVin(request.getVin())
-                    .filter(existingCar -> !existingCar.getId().equals(car.getId()))
-                    .ifPresent(existingCar -> {
-                        throw new RuntimeException(CarShowroomConstants.CAR_VIN_EXISTS);
-                    });
+            if (carRepository.findByVinAndIdNot(request.getVin(), carId).isPresent()) {
+                throw new RuntimeException(CarShowroomConstants.CAR_VIN_EXISTS);
+            }
 
             car.setMake(request.getMake());
             car.setModel(request.getModel());
@@ -236,7 +234,7 @@ public class CarServiceImpl implements CarService {
             // Validate status value
             if (!VALID_CAR_STATUSES.contains(status.toUpperCase())) {
                 response.setStatus(CarShowroomConstants.STATUS_FAILURE);
-                response.setMessage("Invalid status. Valid values: AVAILABLE, SOLD, RESERVED, UNDER_MAINTENANCE");
+                response.setMessage(CarShowroomConstants.INVALID_CAR_STATUS);
                 response.setData(null);
                 return response;
             }

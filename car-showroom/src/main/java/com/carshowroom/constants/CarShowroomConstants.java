@@ -36,12 +36,15 @@ public class CarShowroomConstants {
     public static final String CAR_ALREADY_SOLD                 = "Car is already sold";
     public static final String CAR_VIN_EXISTS                   = "Car with this VIN already exists";
 
-    // ─── Car Status ──────────────────────────────────────────────────────────
+    // ─── Car Status ──────────────────────────────────────────────────────────────
     public static final String CAR_STATUS_AVAILABLE             = "AVAILABLE";
     public static final String CAR_STATUS_SOLD                  = "SOLD";
     public static final String CAR_STATUS_RESERVED              = "RESERVED";
     public static final String CAR_STATUS_UNDER_MAINTENANCE     = "UNDER_MAINTENANCE";
     public static final String CAR_STATUS_UPDATED_SUCCESSFULLY  = "Car status updated successfully";
+    public static final String INVALID_CAR_STATUS               = "Invalid car status. Valid values: AVAILABLE, SOLD, RESERVED, UNDER_MAINTENANCE";
+    public static final String CAR_ID_CANNOT_BE_NULL_OR_NEGATIVE = "Car id cannot be null or negative";
+    public static final String CAR_SEARCH_RESULTS_FETCHED       = "Car search results fetched successfully";
 
     // ─── Customer ────────────────────────────────────────────────────────────
     public static       String CUSTOMER_REGISTERED_SUCCESSFULLY = "Customer registered successfully";

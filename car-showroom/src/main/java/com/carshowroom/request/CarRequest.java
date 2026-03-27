@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 public class CarRequest {
 
+    private Long carId;
+
     @NotBlank(message = "Make must not be blank")
     private String make;
 
