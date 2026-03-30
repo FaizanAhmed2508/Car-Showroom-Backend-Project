@@ -12,7 +12,6 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +69,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    // 401 - Invalid credentials
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidCredentials(InvalidCredentialsException ex) {
+        return buildError(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    }
+
+    // 409 - Duplicate car (same VIN)
+    @ExceptionHandler(DuplicateCarException.class)
+    public ResponseEntity<Map<String, Object>> handleDuplicateCar(DuplicateCarException ex) {
+        return buildError(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
     // 400 - Bad request (invalid inputs)
     @ExceptionHandler({
             IllegalArgumentException.class,
@@ -83,18 +94,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    // 401 - Invalid credentials
-    @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<Map<String, Object>> handleInvalidCredentials(InvalidCredentialsException ex) {
-        return buildError(HttpStatus.UNAUTHORIZED, ex.getMessage());
-    }
-
-    // 409 - Duplicate
-    @ExceptionHandler(DuplicateCarException.class)
-    public ResponseEntity<Map<String, Object>> handleDuplicateCar(DuplicateCarException ex) {
-        return buildError(HttpStatus.CONFLICT, ex.getMessage());
-    }
-
     // Type mismatch (e.g. passing string where Long expected)
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Map<String, Object>> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
@@ -105,6 +104,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    // 405 - Method not supported → return 404 to hide endpoint existence
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<Map<String, Object>> handleMethodNotSupported(HttpRequestMethodNotSupportedException ex) {
         Map<String, Object> response = new HashMap<>();
@@ -114,8 +114,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    // 400 - Validation failed (@Valid annotation failures)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Object>> handleValidation(Exception ex) {
+    public ResponseEntity<ApiResponse<Object>> handleValidation(MethodArgumentNotValidException ex) {
         ApiResponse<Object> response =
                 new ApiResponse<>(
                         CarShowroomConstants.STATUS_FAILURE,
@@ -124,8 +125,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
+    // 409 - Database constraint violation
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ApiResponse<Object>> handleDB(Exception ex) {
+    public ResponseEntity<ApiResponse<Object>> handleDB(DataIntegrityViolationException ex) {
         ApiResponse<Object> response =
                 new ApiResponse<>(
                         CarShowroomConstants.STATUS_FAILURE,
@@ -134,17 +136,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
+    // RuntimeException fallback
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponse<Object>> handleRuntimeException(RuntimeException ex) {
         ApiResponse<Object> response =
-                new ApiResponse<>(CarShowroomConstants.FAILURE,
+                new ApiResponse<>(
+                        CarShowroomConstants.FAILURE,
                         ex.getMessage(),
                         null
                 );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
-    // 500 - Generic / fallback exception
+    // 500 - Generic fallback
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex) {
         Map<String, Object> response = new HashMap<>();
