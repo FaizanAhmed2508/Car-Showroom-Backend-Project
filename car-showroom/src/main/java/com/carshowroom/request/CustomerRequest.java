@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 public class CustomerRequest {
 
+    private Long customerId;
+
     @NotBlank(message = "First name must not be blank")
     private String firstName;
 

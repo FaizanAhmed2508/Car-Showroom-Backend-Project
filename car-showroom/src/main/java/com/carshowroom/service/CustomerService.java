@@ -13,6 +13,6 @@ public interface CustomerService {
     ApiResponse<List<Customer>> getAllCustomers();
     ApiResponse<String> updateCustomer(Long customerId, CustomerRequest request);
     ApiResponse<String> deleteCustomer(Long customerId);
-    // Add more methods as needed
+    List<Customer> searchCustomerByName(String name);
 
 }

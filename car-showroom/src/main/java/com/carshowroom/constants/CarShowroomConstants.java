@@ -15,6 +15,10 @@ public class CarShowroomConstants {
     public static       String MESSAGE                          = "message: ";
     public static final String DATA                             = "Data";
     public static final String NOT_FOUND                        = "NOT_FOUND";
+    public static final String STATUS                           = "status";
+    public static final String NO_DATA_FOUND                    = "No data found";
+    public static final String SOMETHING_WENT_WRONG             = "Something went wrong";
+    public static final String INTERNAL_SERVER_ERROR            = "Internal Server Error";
 
     // ─── Auth / Login ────────────────────────────────────────────────────────
     public static final String LOGIN_SUCCESS                    = "Login successful";
@@ -22,6 +26,19 @@ public class CarShowroomConstants {
     public static final String INVALID_CREDENTIALS              = "Invalid credentials";
     public static final String EMAIL_REQUIRED                   = "Email is required";
     public static final String PASSWORD_REQUIRED                = "Password is required";
+    public static final String INVALID_EMAIL_FORMAT             = "Invalid email format";
+    public static final String PASSWORD_MISMATCH                = "Passwords do not match";
+
+    // ─── Validation / Request ────────────────────────────────────────────────
+    public static final String INVALID_REQUEST                  = "Invalid request";
+    public static       String REQUEST_BODY_IS_MISSING_OR_CONTAINS_INVALID_DATA = "Required body is missing or contains invalid data";
+    public static       String BAD_REQUEST                      = "BAD REQUEST";
+
+    // ─── User ────────────────────────────────────────────────────────────────
+    public static final String USER_REGISTERED_SUCCESSFULLY     = "User registered successfully";
+    public static       String USER_NOT_FOUND                   = "User not found: ";
+    public static final String USER_FETCHED_SUCCESSFULLY        = "User fetched successfully";
+    public static final String INVALID_USER_ID                  = "Invalid user id";
 
     // ─── Car ─────────────────────────────────────────────────────────────────
     public static final String CAR_ADDED_SUCCESSFULLY           = "Car added successfully";
@@ -35,16 +52,16 @@ public class CarShowroomConstants {
     public static final String INVALID_CAR_ID                   = "Invalid car id";
     public static final String CAR_ALREADY_SOLD                 = "Car is already sold";
     public static final String CAR_VIN_EXISTS                   = "Car with this VIN already exists";
+    public static final String CAR_ID_CANNOT_BE_NULL_OR_NEGATIVE = "Car id cannot be null or negative";
+    public static final String CAR_SEARCH_RESULTS_FETCHED       = "Car search results fetched successfully";
 
-    // ─── Car Status ──────────────────────────────────────────────────────────────
+    // ─── Car Status ──────────────────────────────────────────────────────────
     public static final String CAR_STATUS_AVAILABLE             = "AVAILABLE";
     public static final String CAR_STATUS_SOLD                  = "SOLD";
     public static final String CAR_STATUS_RESERVED              = "RESERVED";
     public static final String CAR_STATUS_UNDER_MAINTENANCE     = "UNDER_MAINTENANCE";
     public static final String CAR_STATUS_UPDATED_SUCCESSFULLY  = "Car status updated successfully";
     public static final String INVALID_CAR_STATUS               = "Invalid car status. Valid values: AVAILABLE, SOLD, RESERVED, UNDER_MAINTENANCE";
-    public static final String CAR_ID_CANNOT_BE_NULL_OR_NEGATIVE = "Car id cannot be null or negative";
-    public static final String CAR_SEARCH_RESULTS_FETCHED       = "Car search results fetched successfully";
 
     // ─── Customer ────────────────────────────────────────────────────────────
     public static       String CUSTOMER_REGISTERED_SUCCESSFULLY = "Customer registered successfully";
@@ -56,6 +73,8 @@ public class CarShowroomConstants {
     public static       String CUSTOMER_NOT_FOUND_WITH_ID       = "Customer not found with id: ";
     public static final String INVALID_CUSTOMER_ID              = "Invalid customer id";
     public static final String CUSTOMER_EMAIL_EXISTS            = "Customer with this email already exists";
+    public static final String NO_CUSTOMERS_FOUND               = "No customers found";
+    public static final String CUSTOMER_ID_CANNOT_BE_NULL_OR_NEGATIVE = "Customer id cannot be null or negative";
 
     // ─── Employee ────────────────────────────────────────────────────────────
     public static final String EMPLOYEE_ADDED_SUCCESSFULLY      = "Employee added successfully";
@@ -66,6 +85,9 @@ public class CarShowroomConstants {
     public static final String EMPLOYEE_NOT_FOUND               = "Employee not found";
     public static       String EMPLOYEE_NOT_FOUND_WITH_ID       = "Employee not found with id: ";
     public static final String INVALID_EMPLOYEE_ID              = "Invalid employee id";
+    public static final String NO_EMPLOYEES_FOUND               = "No employees found";
+    public static final String EMPLOYEE_EMAIL_EXISTS            = "Employee with this email already exists";
+    public static final String EMPLOYEE_ID_CANNOT_BE_NULL_OR_NEGATIVE = "Employee id cannot be null or negative";
 
     // ─── Sale ────────────────────────────────────────────────────────────────
     public static final String SALE_RECORDED_SUCCESSFULLY       = "Sale recorded successfully";
@@ -74,15 +96,7 @@ public class CarShowroomConstants {
     public static final String SALE_NOT_FOUND                   = "Sale not found";
     public static       String SALE_NOT_FOUND_WITH_ID           = "Sale not found with id: ";
     public static final String INVALID_SALE_ID                  = "Invalid sale id";
-
-    // ─── Validation / Request ────────────────────────────────────────────────
-    public static final String INVALID_REQUEST                  = "Invalid request";
-    public static       String REQUEST_BODY_IS_MISSING_OR_CONTAINS_INVALID_DATA = "Required body is missing or contains invalid data";
-    public static       String BAD_REQUEST                      = "BAD REQUEST";
-
-    // ─── Errors / Misc ───────────────────────────────────────────────────────
-    public static final String SOMETHING_WENT_WRONG             = "Something went wrong";
-    public static final String INTERNAL_SERVER_ERROR            = "Internal Server Error";
-    public static final String NO_DATA_FOUND                    = "No data found";
+    public static final String NO_SALES_FOUND                   = "No sales found";
+    public static final String SALE_ID_CANNOT_BE_NULL_OR_NEGATIVE = "Sale id cannot be null or negative";
 
 }
