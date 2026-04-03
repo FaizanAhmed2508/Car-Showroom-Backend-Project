@@ -13,6 +13,6 @@ public interface EmployeeService {
     ApiResponse<List<Employee>> getAllEmployees();
     ApiResponse<String> updateEmployee(Long employeeId, EmployeeRequest request);
     ApiResponse<String> deleteEmployee(Long employeeId);
-    // Add more methods as needed
+    List<Employee> searchEmployeeByName(String name);
 
 }
