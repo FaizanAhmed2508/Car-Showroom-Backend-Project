@@ -11,6 +11,11 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
     List<Sale> findByCustomerId(Long customerId);
     List<Sale> findByEmployeeId(Long employeeId);
-    // Add custom query methods here
+
+    // Get all sales for a specific car
+    List<Sale> findByCarId(Long carId);
+
+    // Check if a car has already been sold
+    boolean existsByCarId(Long carId);
 
 }

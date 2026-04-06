@@ -13,6 +13,5 @@ public interface SaleService {
     ApiResponse<List<Sale>> getAllSales();
     ApiResponse<List<Sale>> getSalesByCustomer(Long customerId);
     ApiResponse<List<Sale>> getSalesByEmployee(Long employeeId);
-    // Add more methods as needed
 
 }

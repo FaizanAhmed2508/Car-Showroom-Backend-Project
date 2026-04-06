@@ -8,6 +8,8 @@ import lombok.Setter;
 @Setter
 public class SaleRequest {
 
+    private Long saleId;
+
     @NotNull(message = "Car ID must not be null")
     private Long carId;
 
