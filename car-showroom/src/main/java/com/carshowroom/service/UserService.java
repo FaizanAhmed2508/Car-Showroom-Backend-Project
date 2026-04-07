@@ -9,6 +9,6 @@ public interface UserService {
 
     ApiResponse<String> registerUser(UserRegistrationRequest request);
     ApiResponse<String> loginUser(LoginRequest request);
-    // Add more methods as needed
+    ApiResponse<User> getUserById(Long userId);
 
 }

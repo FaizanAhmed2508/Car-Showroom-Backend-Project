@@ -16,6 +16,9 @@ public class UserRegistrationRequest {
     @NotBlank(message = "Password must not be blank")
     private String password;
 
+    @NotBlank(message = "Confirm password must not be blank")
+    private String confirmPassword;
+
     private String role;
 
 }
