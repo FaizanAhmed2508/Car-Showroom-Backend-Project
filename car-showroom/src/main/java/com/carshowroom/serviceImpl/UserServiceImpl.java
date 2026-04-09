@@ -1,5 +1,6 @@
 package com.carshowroom.serviceImpl;
 
+import com.carshowroom.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import com.carshowroom.constants.CarShowroomConstants;
 import com.carshowroom.exception.InvalidCredentialsException;
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Override
     public ApiResponse<String> registerUser(UserRegistrationRequest request) {
@@ -84,10 +86,11 @@ public class UserServiceImpl implements UserService {
                         CarShowroomConstants.INVALID_CREDENTIALS);
             }
 
-            // Login success — JWT will be added on Day 16
+            // Generate JWT token and return it
+            String token = jwtUtil.generateTokenWithClaims(user.getEmail(), user.getRole());
             response.setStatus(CarShowroomConstants.STATUS_SUCCESS);
             response.setMessage(CarShowroomConstants.LOGIN_SUCCESS);
-            response.setData(null);
+            response.setData(token);
 
         } catch (InvalidCredentialsException e) {
 
