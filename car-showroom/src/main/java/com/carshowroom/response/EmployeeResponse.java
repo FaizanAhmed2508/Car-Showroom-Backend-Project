@@ -9,14 +9,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerResponse {
+public class EmployeeResponse {
 
-    private Long customerId;
+    private Long employeeId;
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
-    private String address;
+    private String employeeRole;
+    private String isActive;
     private String createdTime;
     private String updatedTime;
 

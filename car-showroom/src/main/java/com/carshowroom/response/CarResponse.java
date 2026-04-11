@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CarResponse {
 
-    private Long id;
+    private Long carId;
     private String make;
     private String model;
     private Integer year;
@@ -24,5 +24,6 @@ public class CarResponse {
     private String color;
     private String description;
     private String createdTime;
+    private String updatedTime;
 
 }
