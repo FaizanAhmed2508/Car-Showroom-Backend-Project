@@ -225,5 +225,112 @@ public class CarController {
 
         return ResponseEntity.ok(response);
     }
+    // Search cars by price range
+    @GetMapping("/search/price")
+    public ResponseEntity<ApiResponse<List<Car>>> searchCarsByPriceRange(
+            @RequestParam Double minPrice,
+            @RequestParam Double maxPrice) {
 
+        ApiResponse<List<Car>> response = new ApiResponse<>();
+
+        // Edge case: invalid price range
+        if (minPrice == null || maxPrice == null || minPrice < 0 || maxPrice < 0) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage("Invalid price range");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        if (minPrice > maxPrice) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage("Min price cannot be greater than max price");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        List<Car> cars = carService.searchCarsByPriceRange(minPrice, maxPrice);
+
+        if (cars == null || cars.isEmpty()) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(CarShowroomConstants.CAR_NOT_FOUND);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        response.setStatus(CarShowroomConstants.STATUS_SUCCESS);
+        response.setMessage(CarShowroomConstants.CAR_SEARCH_RESULTS_FETCHED);
+        response.setData(cars);
+
+        return ResponseEntity.ok(response);
+    }
+
+    // Search cars by year range
+    @GetMapping("/search/year")
+    public ResponseEntity<ApiResponse<List<Car>>> searchCarsByYearRange(
+            @RequestParam Integer startYear,
+            @RequestParam Integer endYear) {
+
+        ApiResponse<List<Car>> response = new ApiResponse<>();
+
+        // Edge case: invalid year range
+        if (startYear == null || endYear == null) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage("Year range cannot be null");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        if (startYear > endYear) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage("Start year cannot be greater than end year");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        List<Car> cars = carService.searchCarsByYearRange(startYear, endYear);
+
+        if (cars == null || cars.isEmpty()) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(CarShowroomConstants.CAR_NOT_FOUND);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        response.setStatus(CarShowroomConstants.STATUS_SUCCESS);
+        response.setMessage(CarShowroomConstants.CAR_SEARCH_RESULTS_FETCHED);
+        response.setData(cars);
+
+        return ResponseEntity.ok(response);
+    }
+
+    // Search cars by fuel type
+    @GetMapping("/search/fuel")
+    public ResponseEntity<ApiResponse<List<Car>>> searchCarsByFuelType(
+            @RequestParam String fuelType) {
+
+        ApiResponse<List<Car>> response = new ApiResponse<>();
+
+        // Edge case: blank fuel type
+        if (fuelType == null || fuelType.trim().isEmpty()) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage("Fuel type cannot be blank");
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        List<Car> cars = carService.searchCarsByFuelType(fuelType);
+
+        if (cars == null || cars.isEmpty()) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(CarShowroomConstants.CAR_NOT_FOUND);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        response.setStatus(CarShowroomConstants.STATUS_SUCCESS);
+        response.setMessage(CarShowroomConstants.CAR_SEARCH_RESULTS_FETCHED);
+        response.setData(cars);
+
+        return ResponseEntity.ok(response);
+    }
 }

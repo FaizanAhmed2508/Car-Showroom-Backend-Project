@@ -26,6 +26,10 @@ public class CarServiceImpl implements CarService {
             CarShowroomConstants.CAR_STATUS_UNDER_MAINTENANCE
     );
 
+    private static final Set<String> VALID_FUEL_TYPES = Set.of(
+            "PETROL", "DIESEL", "ELECTRIC", "HYBRID", "CNG"
+    );
+
     @Override
     public ApiResponse<String> addCar(CarRequest request) {
 
@@ -278,5 +282,52 @@ public class CarServiceImpl implements CarService {
         System.out.println(carRepository.findByMakeIgnoreCase(make));
         return carRepository.findByMakeIgnoreCase(make);
     }
+    @Override
+    public List<Car> searchCarsByPriceRange(Double minPrice, Double maxPrice) {
 
+        if (minPrice == null || maxPrice == null) {
+            return List.of();
+        }
+
+        if (minPrice < 0 || maxPrice < 0) {
+            return List.of();
+        }
+
+        if (minPrice > maxPrice) {
+            return List.of();
+        }
+
+        System.out.println(carRepository.findByPriceBetween(minPrice, maxPrice));
+        return carRepository.findByPriceBetween(minPrice, maxPrice);
+    }
+
+    @Override
+    public List<Car> searchCarsByYearRange(Integer startYear, Integer endYear) {
+
+        if (startYear == null || endYear == null) {
+            return List.of();
+        }
+
+        if (startYear > endYear) {
+            return List.of();
+        }
+
+        System.out.println(carRepository.findByYearBetween(startYear, endYear));
+        return carRepository.findByYearBetween(startYear, endYear);
+    }
+
+    @Override
+    public List<Car> searchCarsByFuelType(String fuelType) {
+
+        if (fuelType == null) {
+            return List.of();
+        }
+
+        if (!VALID_FUEL_TYPES.contains(fuelType.toUpperCase())) {
+            return List.of();
+        }
+
+        System.out.println(carRepository.findByMakeIgnoreCase(fuelType));
+        return carRepository.findByFuelTypeIgnoreCase(fuelType);
+    }
 }
