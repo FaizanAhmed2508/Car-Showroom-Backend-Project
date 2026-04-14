@@ -98,5 +98,7 @@ public class CarShowroomConstants {
     public static final String INVALID_SALE_ID                  = "Invalid sale id";
     public static final String NO_SALES_FOUND                   = "No sales found";
     public static final String SALE_ID_CANNOT_BE_NULL_OR_NEGATIVE = "Sale id cannot be null or negative";
-
+    public static final String SALES_REPORT_FETCHED_SUCCESSFULLY  = "Sales report fetched successfully";
+    public static final String NO_SALES_REPORT_FOUND              = "No sales data found to generate report";
+    public static final String REVENUE_FETCHED_SUCCESSFULLY       = "Revenue fetched successfully";
 }

@@ -19,6 +19,9 @@ import com.carshowroom.request.SaleRequest;
 import com.carshowroom.response.ApiResponse;
 import com.carshowroom.service.SaleService;
 import org.springframework.stereotype.Service;
+import com.carshowroom.response.SalesReportResponse;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 import java.util.List;
 
@@ -178,6 +181,114 @@ public class SaleServiceImpl implements SaleService {
                             CarShowroomConstants.EMPLOYEE_NOT_FOUND_WITH_ID + employeeId));
 
             List<Sale> sales = saleRepository.findByEmployeeId(employeeId);
+
+            if (sales.isEmpty()) {
+                response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+                response.setMessage(CarShowroomConstants.NO_SALES_FOUND);
+                response.setData(null);
+                return response;
+            }
+
+            response.setStatus(CarShowroomConstants.STATUS_SUCCESS);
+            response.setMessage(CarShowroomConstants.SALES_FETCHED_SUCCESSFULLY);
+            response.setData(sales);
+
+        } catch (Exception e) {
+
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(e.getMessage());
+            response.setData(null);
+        }
+
+        return response;
+    }
+    @Override
+    public ApiResponse<SalesReportResponse> getSalesReport() {
+
+        ApiResponse<SalesReportResponse> response = new ApiResponse<>();
+
+        try {
+
+            List<Sale> sales = saleRepository.findAll();
+
+            if (sales.isEmpty()) {
+                response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+                response.setMessage(CarShowroomConstants.NO_SALES_REPORT_FOUND);
+                response.setData(null);
+                return response;
+            }
+
+            Double totalRevenue    = saleRepository.getTotalRevenue();
+            Double averagePrice    = saleRepository.getAverageSalePrice();
+            Double highestPrice    = saleRepository.getHighestSalePrice();
+            Double lowestPrice     = saleRepository.getLowestSalePrice();
+
+            SalesReportResponse report = SalesReportResponse.builder()
+                    .totalSales((long) sales.size())
+                    .totalRevenue(totalRevenue != null ? totalRevenue : 0.0)
+                    .averageSalePrice(averagePrice != null ? averagePrice : 0.0)
+                    .highestSalePrice(highestPrice != null ? highestPrice : 0.0)
+                    .lowestSalePrice(lowestPrice != null ? lowestPrice : 0.0)
+                    .totalCarsSold((long) sales.size())
+                    .build();
+
+            response.setStatus(CarShowroomConstants.STATUS_SUCCESS);
+            response.setMessage(CarShowroomConstants.SALES_REPORT_FETCHED_SUCCESSFULLY);
+            response.setData(report);
+
+        } catch (Exception e) {
+
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(e.getMessage());
+            response.setData(null);
+        }
+
+        return response;
+    }
+
+    @Override
+    public ApiResponse<Map<String, Object>> getEmployeeSalesReport(Long employeeId) {
+
+        ApiResponse<Map<String, Object>> response = new ApiResponse<>();
+
+        try {
+
+            // Check employee exists
+            employeeRepository.findById(employeeId)
+                    .orElseThrow(() -> new EmployeeNotFoundException(
+                            CarShowroomConstants.EMPLOYEE_NOT_FOUND_WITH_ID + employeeId));
+
+            Long totalSales        = saleRepository.countSalesByEmployee(employeeId);
+            Double totalRevenue    = saleRepository.getTotalRevenueByEmployee(employeeId);
+
+            Map<String, Object> data = new LinkedHashMap<>();
+            data.put("employeeId",   employeeId);
+            data.put("totalSales",   totalSales != null ? totalSales : 0);
+            data.put("totalRevenue", totalRevenue != null ? totalRevenue : 0.0);
+
+            response.setStatus(CarShowroomConstants.STATUS_SUCCESS);
+            response.setMessage(CarShowroomConstants.REVENUE_FETCHED_SUCCESSFULLY);
+            response.setData(data);
+
+        } catch (Exception e) {
+
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(e.getMessage());
+            response.setData(null);
+        }
+
+        return response;
+    }
+
+    @Override
+    public ApiResponse<List<Sale>> getSalesByPaymentMethod(String paymentMethod) {
+
+        ApiResponse<List<Sale>> response = new ApiResponse<>();
+
+        try {
+
+            List<Sale> sales = saleRepository.findByPaymentMethod(
+                    paymentMethod.toUpperCase());
 
             if (sales.isEmpty()) {
                 response.setStatus(CarShowroomConstants.STATUS_FAILURE);
