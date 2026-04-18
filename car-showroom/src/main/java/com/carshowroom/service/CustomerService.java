@@ -3,6 +3,8 @@ package com.carshowroom.service;
 import com.carshowroom.model.Customer;
 import com.carshowroom.request.CustomerRequest;
 import com.carshowroom.response.ApiResponse;
+import com.carshowroom.response.CustomerPurchaseHistoryResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -14,5 +16,7 @@ public interface CustomerService {
     ApiResponse<String> updateCustomer(Long customerId, CustomerRequest request);
     ApiResponse<String> deleteCustomer(Long customerId);
     List<Customer> searchCustomerByName(String name);
+    ApiResponse<CustomerPurchaseHistoryResponse> getCustomerPurchaseHistory(Long customerId);
+    ApiResponse<Page<Customer>> getAllCustomersPaginated(int page, int size);
 
 }

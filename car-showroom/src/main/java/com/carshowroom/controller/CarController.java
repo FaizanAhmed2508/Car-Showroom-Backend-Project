@@ -10,6 +10,7 @@ import com.carshowroom.service.CarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -332,5 +333,20 @@ public class CarController {
         response.setData(cars);
 
         return ResponseEntity.ok(response);
+    }
+    // Get all cars paginated
+    @GetMapping("/paginated")
+    public ResponseEntity<ApiResponse<Page<Car>>> getAllCarsPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        ApiResponse<Page<Car>> response =
+                carService.getAllCarsPaginated(page, size);
+
+        if (CarShowroomConstants.STATUS_SUCCESS.equals(response.getStatus())) {
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }

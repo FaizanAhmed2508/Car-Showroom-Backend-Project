@@ -9,6 +9,14 @@ import com.carshowroom.request.CustomerRequest;
 import com.carshowroom.response.ApiResponse;
 import com.carshowroom.service.CustomerService;
 import org.springframework.stereotype.Service;
+import com.carshowroom.response.CustomerPurchaseHistoryResponse;
+import com.carshowroom.repository.SaleRepository;
+import com.carshowroom.model.Sale;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import java.util.stream.Collectors;
 
 import java.util.List;
 
@@ -17,6 +25,7 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final SaleRepository saleRepository;
 
     @Override
     public ApiResponse<String> registerCustomer(CustomerRequest request) {
@@ -174,6 +183,106 @@ public class CustomerServiceImpl implements CustomerService {
                 .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(name, name));
         return customerRepository
                 .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(name, name);
+    }
+    @Override
+    public ApiResponse<CustomerPurchaseHistoryResponse> getCustomerPurchaseHistory(
+            Long customerId) {
+
+        ApiResponse<CustomerPurchaseHistoryResponse> response = new ApiResponse<>();
+
+        try {
+
+            // Check customer exists
+            Customer customer = customerRepository.findById(customerId)
+                    .orElseThrow(() -> new CustomerNotFoundException(
+                            CarShowroomConstants.CUSTOMER_NOT_FOUND_WITH_ID + customerId));
+
+            // Get all sales for this customer
+            List<Sale> sales = saleRepository.findByCustomerId(customerId);
+
+            if (sales.isEmpty()) {
+                response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+                response.setMessage(CarShowroomConstants.NO_PURCHASE_HISTORY_FOUND);
+                response.setData(null);
+                return response;
+            }
+
+            // Build purchase details list
+            List<CustomerPurchaseHistoryResponse.PurchaseDetail> purchases = sales.stream()
+                    .map(sale -> CustomerPurchaseHistoryResponse.PurchaseDetail.builder()
+                            .saleId(sale.getId())
+                            .carId(sale.getCar().getId())
+                            .carMake(sale.getCar().getMake())
+                            .carModel(sale.getCar().getModel())
+                            .carYear(sale.getCar().getYear())
+                            .salePrice(sale.getSalePrice())
+                            .paymentMethod(sale.getPaymentMethod())
+                            .saleDate(sale.getSaleDate())
+                            .build())
+                    .collect(Collectors.toList());
+
+            // Calculate totals
+            Double totalSpent = sales.stream()
+                    .mapToDouble(Sale::getSalePrice)
+                    .sum();
+
+            // Build response
+            CustomerPurchaseHistoryResponse history =
+                    CustomerPurchaseHistoryResponse.builder()
+                            .customerId(customer.getId())
+                            .customerFirstName(customer.getFirstName())
+                            .customerLastName(customer.getLastName())
+                            .customerEmail(customer.getEmail())
+                            .totalCarsPurchased((long) sales.size())
+                            .totalAmountSpent(totalSpent)
+                            .purchases(purchases)
+                            .build();
+
+            response.setStatus(CarShowroomConstants.STATUS_SUCCESS);
+            response.setMessage(CarShowroomConstants.PURCHASE_HISTORY_FETCHED_SUCCESSFULLY);
+            response.setData(history);
+
+        } catch (Exception e) {
+
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(e.getMessage());
+            response.setData(null);
+        }
+
+        return response;
+    }
+
+    @Override
+    public ApiResponse<Page<Customer>> getAllCustomersPaginated(int page, int size) {
+
+        ApiResponse<Page<Customer>> response = new ApiResponse<>();
+
+        try {
+
+            Pageable pageable = PageRequest.of(page, size,
+                    Sort.by("createdTime").descending());
+
+            Page<Customer> customers = customerRepository.findAll(pageable);
+
+            if (customers.isEmpty()) {
+                response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+                response.setMessage(CarShowroomConstants.NO_CUSTOMERS_FOUND);
+                response.setData(null);
+                return response;
+            }
+
+            response.setStatus(CarShowroomConstants.STATUS_SUCCESS);
+            response.setMessage(CarShowroomConstants.CUSTOMERS_FETCHED_SUCCESSFULLY);
+            response.setData(customers);
+
+        } catch (Exception e) {
+
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(e.getMessage());
+            response.setData(null);
+        }
+
+        return response;
     }
 
 }

@@ -9,6 +9,10 @@ import com.carshowroom.request.CarRequest;
 import com.carshowroom.response.ApiResponse;
 import com.carshowroom.service.CarService;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Set;
@@ -329,5 +333,37 @@ public class CarServiceImpl implements CarService {
 
         System.out.println(carRepository.findByMakeIgnoreCase(fuelType));
         return carRepository.findByFuelTypeIgnoreCase(fuelType);
+    }
+    @Override
+    public ApiResponse<Page<Car>> getAllCarsPaginated(int page, int size) {
+
+        ApiResponse<Page<Car>> response = new ApiResponse<>();
+
+        try {
+
+            Pageable pageable = PageRequest.of(page, size,
+                    Sort.by("createdTime").descending());
+
+            Page<Car> cars = carRepository.findAll(pageable);
+
+            if (cars.isEmpty()) {
+                response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+                response.setMessage(CarShowroomConstants.NO_CARS_FOUND);
+                response.setData(null);
+                return response;
+            }
+
+            response.setStatus(CarShowroomConstants.STATUS_SUCCESS);
+            response.setMessage(CarShowroomConstants.CARS_FETCHED_SUCCESSFULLY);
+            response.setData(cars);
+
+        } catch (Exception e) {
+
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(e.getMessage());
+            response.setData(null);
+        }
+
+        return response;
     }
 }

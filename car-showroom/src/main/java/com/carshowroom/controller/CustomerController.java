@@ -10,6 +10,8 @@ import com.carshowroom.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.carshowroom.response.CustomerPurchaseHistoryResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -149,6 +151,45 @@ public class CustomerController {
         response.setData(customers);
 
         return ResponseEntity.ok(response);
+    }
+    // Get customer purchase history
+    @GetMapping("/{customerId}/purchase-history")
+    public ResponseEntity<ApiResponse<CustomerPurchaseHistoryResponse>> getCustomerPurchaseHistory(
+            @PathVariable Long customerId) {
+
+        ApiResponse<CustomerPurchaseHistoryResponse> response = new ApiResponse<>();
+
+        // Edge case: invalid ID
+        if (customerId <= 0) {
+            response.setStatus(CarShowroomConstants.STATUS_FAILURE);
+            response.setMessage(CarShowroomConstants.CUSTOMER_ID_CANNOT_BE_NULL_OR_NEGATIVE);
+            response.setData(null);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        response = customerService.getCustomerPurchaseHistory(customerId);
+
+        if (CarShowroomConstants.STATUS_SUCCESS.equals(response.getStatus())) {
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    // Get all customers paginated
+    @GetMapping("/paginated")
+    public ResponseEntity<ApiResponse<Page<Customer>>> getAllCustomersPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        ApiResponse<Page<Customer>> response =
+                customerService.getAllCustomersPaginated(page, size);
+
+        if (CarShowroomConstants.STATUS_SUCCESS.equals(response.getStatus())) {
+            return ResponseEntity.ok(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
 }

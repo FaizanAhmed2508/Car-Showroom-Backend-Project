@@ -3,6 +3,7 @@ package com.carshowroom.service;
 import com.carshowroom.model.Car;
 import com.carshowroom.request.CarRequest;
 import com.carshowroom.response.ApiResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -20,5 +21,6 @@ public interface CarService {
     List<Car> searchCarsByPriceRange(Double minPrice, Double maxPrice);
     List<Car> searchCarsByYearRange(Integer startYear, Integer endYear);
     List<Car> searchCarsByFuelType(String fuelType);
+    ApiResponse<Page<Car>> getAllCarsPaginated(int page, int size);
 
 }

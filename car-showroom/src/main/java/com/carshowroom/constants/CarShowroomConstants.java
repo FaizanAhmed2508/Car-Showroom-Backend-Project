@@ -101,4 +101,6 @@ public class CarShowroomConstants {
     public static final String SALES_REPORT_FETCHED_SUCCESSFULLY  = "Sales report fetched successfully";
     public static final String NO_SALES_REPORT_FOUND              = "No sales data found to generate report";
     public static final String REVENUE_FETCHED_SUCCESSFULLY       = "Revenue fetched successfully";
+    public static final String PURCHASE_HISTORY_FETCHED_SUCCESSFULLY = "Customer purchase history fetched successfully";
+    public static final String NO_PURCHASE_HISTORY_FOUND             = "No purchase history found for this customer";
 }
