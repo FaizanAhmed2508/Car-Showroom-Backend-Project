@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.carshowroom.response.CustomerPurchaseHistoryResponse;
 import org.springframework.data.domain.Page;
+import com.carshowroom.utility.CarShowroomUtil;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class CustomerController {
         ApiResponse<Customer> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (customerId <= 0) {
+        if (CarShowroomUtil.isInvalidId(customerId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.CUSTOMER_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
@@ -82,7 +83,7 @@ public class CustomerController {
         ApiResponse<String> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (customerId <= 0) {
+        if (CarShowroomUtil.isInvalidId(customerId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.CUSTOMER_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
@@ -106,7 +107,7 @@ public class CustomerController {
         ApiResponse<String> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (customerId == null || customerId <= 0) {
+        if (CarShowroomUtil.isInvalidId(customerId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.CUSTOMER_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
@@ -160,7 +161,7 @@ public class CustomerController {
         ApiResponse<CustomerPurchaseHistoryResponse> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (customerId <= 0) {
+        if (CarShowroomUtil.isInvalidId(customerId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.CUSTOMER_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);

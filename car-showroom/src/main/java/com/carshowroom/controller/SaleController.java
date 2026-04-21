@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.carshowroom.response.SalesReportResponse;
 import java.util.Map;
+import com.carshowroom.utility.CarShowroomUtil;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class SaleController {
         ApiResponse<Sale> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (saleId <= 0) {
+        if (CarShowroomUtil.isInvalidId(saleId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.SALE_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
@@ -80,7 +81,7 @@ public class SaleController {
         ApiResponse<List<Sale>> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (customerId <= 0) {
+        if (CarShowroomUtil.isInvalidId(customerId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.CUSTOMER_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
@@ -104,7 +105,7 @@ public class SaleController {
         ApiResponse<List<Sale>> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (employeeId <= 0) {
+        if (CarShowroomUtil.isInvalidId(employeeId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.EMPLOYEE_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
@@ -140,7 +141,7 @@ public class SaleController {
         ApiResponse<Map<String, Object>> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (employeeId <= 0) {
+        if (CarShowroomUtil.isInvalidId(employeeId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.EMPLOYEE_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);

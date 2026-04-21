@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
+import com.carshowroom.utility.CarShowroomUtil;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class CarController {
         ApiResponse<Car> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (carId <= 0) {
+        if (CarShowroomUtil.isInvalidId(carId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.CAR_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
@@ -125,7 +126,7 @@ public class CarController {
         ApiResponse<String> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (carId <= 0) {
+        if (CarShowroomUtil.isInvalidId(carId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.CAR_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
@@ -173,7 +174,7 @@ public class CarController {
         ApiResponse<String> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (carId <= 0) {
+        if (CarShowroomUtil.isInvalidId(carId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.CAR_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
@@ -235,7 +236,7 @@ public class CarController {
         ApiResponse<List<Car>> response = new ApiResponse<>();
 
         // Edge case: invalid price range
-        if (minPrice == null || maxPrice == null || minPrice < 0 || maxPrice < 0) {
+        if (CarShowroomUtil.isInvalidPriceRange(minPrice, maxPrice)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage("Invalid price range");
             response.setData(null);
@@ -274,7 +275,7 @@ public class CarController {
         ApiResponse<List<Car>> response = new ApiResponse<>();
 
         // Edge case: invalid year range
-        if (startYear == null || endYear == null) {
+        if (CarShowroomUtil.isInvalidYearRange(startYear, endYear)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage("Year range cannot be null");
             response.setData(null);

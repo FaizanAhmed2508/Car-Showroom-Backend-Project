@@ -10,6 +10,7 @@ import com.carshowroom.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.carshowroom.utility.CarShowroomUtil;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class EmployeeController {
         ApiResponse<Employee> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (employeeId <= 0) {
+        if (CarShowroomUtil.isInvalidId(employeeId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.EMPLOYEE_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
@@ -80,7 +81,7 @@ public class EmployeeController {
         ApiResponse<String> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (employeeId <= 0) {
+        if (CarShowroomUtil.isInvalidId(employeeId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.EMPLOYEE_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);
@@ -104,7 +105,7 @@ public class EmployeeController {
         ApiResponse<String> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (employeeId == null || employeeId <= 0) {
+        if (CarShowroomUtil.isInvalidId(employeeId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.EMPLOYEE_ID_CANNOT_BE_NULL_OR_NEGATIVE);
             response.setData(null);

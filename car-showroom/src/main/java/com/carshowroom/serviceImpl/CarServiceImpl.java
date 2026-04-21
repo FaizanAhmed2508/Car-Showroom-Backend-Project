@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import com.carshowroom.utility.CarShowroomUtil;
 
 import java.util.List;
 import java.util.Set;
@@ -289,15 +290,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<Car> searchCarsByPriceRange(Double minPrice, Double maxPrice) {
 
-        if (minPrice == null || maxPrice == null) {
-            return List.of();
-        }
-
-        if (minPrice < 0 || maxPrice < 0) {
-            return List.of();
-        }
-
-        if (minPrice > maxPrice) {
+        if (CarShowroomUtil.isInvalidPriceRange(minPrice, maxPrice)) {
             return List.of();
         }
 
@@ -308,11 +301,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<Car> searchCarsByYearRange(Integer startYear, Integer endYear) {
 
-        if (startYear == null || endYear == null) {
-            return List.of();
-        }
-
-        if (startYear > endYear) {
+        if (CarShowroomUtil.isInvalidYearRange(startYear, endYear)) {
             return List.of();
         }
 

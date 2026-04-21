@@ -11,6 +11,7 @@ import com.carshowroom.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.carshowroom.utility.CarShowroomUtil;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -72,7 +73,7 @@ public class AuthController {
         ApiResponse<User> response = new ApiResponse<>();
 
         // Edge case: invalid ID
-        if (userId <= 0) {
+        if (CarShowroomUtil.isInvalidId(userId)) {
             response.setStatus(CarShowroomConstants.STATUS_FAILURE);
             response.setMessage(CarShowroomConstants.INVALID_USER_ID);
             response.setData(null);
