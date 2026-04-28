@@ -12,9 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import com.carshowroom.utility.CarShowroomUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+@Tag(name = "Car", description = "Car management endpoints")
 @RestController
 @RequestMapping("/api/cars")
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class CarController {
     private final CarService carService;
 
     // Add a new car
+    @Operation(summary = "Add a new car")
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<String>> addCar(@Valid @RequestBody CarRequest request) {
 
@@ -36,6 +40,7 @@ public class CarController {
     }
 
     // Get car by ID
+    @Operation(summary = "Get car by ID")
     @GetMapping("/{carId}")
     public ResponseEntity<ApiResponse<Car>> getCarById(@PathVariable Long carId) {
 
@@ -59,6 +64,7 @@ public class CarController {
     }
 
     // Get car by VIN
+    @Operation(summary = "Get car by VIN")
     @GetMapping("/vin/{vin}")
     public ResponseEntity<ApiResponse<Car>> getCarByVin(@PathVariable String vin) {
 
@@ -82,6 +88,7 @@ public class CarController {
     }
 
     // Get all cars
+    @Operation(summary = "Get all cars")
     @GetMapping
     public ResponseEntity<ApiResponse<List<Car>>> getAllCars() {
 
@@ -95,6 +102,7 @@ public class CarController {
     }
 
     // Get cars by status
+    @Operation(summary = "Get cars by status")
     @GetMapping("/status/{status}")
     public ResponseEntity<ApiResponse<List<Car>>> getCarsByStatus(@PathVariable String status) {
 
@@ -118,6 +126,7 @@ public class CarController {
     }
 
     // Update car details
+    @Operation(summary = "Update car details")
     @PutMapping("/update/{carId}")
     public ResponseEntity<ApiResponse<String>> updateCar(
             @PathVariable Long carId,
@@ -143,6 +152,7 @@ public class CarController {
     }
 
     // Delete car (soft delete)
+    @Operation(summary = "Delete car")
     @DeleteMapping("/delete")
     public ResponseEntity<ApiResponse<String>> deleteCar(@RequestParam Long carId) {
 
@@ -166,6 +176,7 @@ public class CarController {
     }
 
     // Update car status
+    @Operation(summary = "Update car status")
     @PutMapping("/{carId}/status")
     public ResponseEntity<ApiResponse<String>> updateCarStatus(
             @PathVariable Long carId,
@@ -199,6 +210,7 @@ public class CarController {
     }
 
     // Search car by make
+    @Operation(summary = "Search cars by make")
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<Car>>> searchCarByMake(@RequestParam String make) {
 
@@ -228,6 +240,7 @@ public class CarController {
         return ResponseEntity.ok(response);
     }
     // Search cars by price range
+    @Operation(summary = "Search cars by price range")
     @GetMapping("/search/price")
     public ResponseEntity<ApiResponse<List<Car>>> searchCarsByPriceRange(
             @RequestParam Double minPrice,
@@ -267,6 +280,7 @@ public class CarController {
     }
 
     // Search cars by year range
+    @Operation(summary = "Search cars by year range")
     @GetMapping("/search/year")
     public ResponseEntity<ApiResponse<List<Car>>> searchCarsByYearRange(
             @RequestParam Integer startYear,
@@ -306,6 +320,7 @@ public class CarController {
     }
 
     // Search cars by fuel type
+    @Operation(summary = "Search cars by fuel type")
     @GetMapping("/search/fuel")
     public ResponseEntity<ApiResponse<List<Car>>> searchCarsByFuelType(
             @RequestParam String fuelType) {
@@ -336,6 +351,7 @@ public class CarController {
         return ResponseEntity.ok(response);
     }
     // Get all cars paginated
+    @Operation(summary = "Get all cars paginated")
     @GetMapping("/paginated")
     public ResponseEntity<ApiResponse<Page<Car>>> getAllCarsPaginated(
             @RequestParam(defaultValue = "0") int page,

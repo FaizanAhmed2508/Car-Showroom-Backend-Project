@@ -12,7 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.carshowroom.utility.CarShowroomUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Auth", description = "Authentication endpoints")
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class AuthController {
     private final UserService userService;
 
     // Register a new user
+    @Operation(summary = "Register a new user")
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<String>> registerUser(
             @Valid @RequestBody UserRegistrationRequest request) {
@@ -44,6 +48,7 @@ public class AuthController {
     }
 
     // Login user
+    @Operation(summary = "Login user")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<String>> loginUser(
             @Valid @RequestBody LoginRequest request) {
@@ -67,6 +72,7 @@ public class AuthController {
     }
 
     // Get user by ID
+    @Operation(summary = "Get user by ID")
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable Long userId) {
 

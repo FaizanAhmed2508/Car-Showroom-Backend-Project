@@ -11,9 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.carshowroom.utility.CarShowroomUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+@Tag(name = "Employee", description = "Employee management endpoints")
 @RestController
 @RequestMapping("/api/employees")
 @RequiredArgsConstructor
@@ -22,6 +25,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     // Add a new employee
+    @Operation(summary = "Add a new employee")
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<String>> addEmployee(
             @Valid @RequestBody EmployeeRequest request) {
@@ -36,6 +40,7 @@ public class EmployeeController {
     }
 
     // Get employee by ID
+    @Operation(summary = "Get employee by ID")
     @GetMapping("/{employeeId}")
     public ResponseEntity<ApiResponse<Employee>> getEmployeeById(
             @PathVariable Long employeeId) {
@@ -60,6 +65,7 @@ public class EmployeeController {
     }
 
     // Get all employees
+    @Operation(summary = "Get all employees")
     @GetMapping
     public ResponseEntity<ApiResponse<List<Employee>>> getAllEmployees() {
 
@@ -73,6 +79,7 @@ public class EmployeeController {
     }
 
     // Update employee details
+    @Operation(summary = "Update employee details")
     @PutMapping("/update/{employeeId}")
     public ResponseEntity<ApiResponse<String>> updateEmployee(
             @PathVariable Long employeeId,
@@ -98,6 +105,7 @@ public class EmployeeController {
     }
 
     // Delete employee (soft delete)
+    @Operation(summary = "Delete employee")
     @DeleteMapping("/delete")
     public ResponseEntity<ApiResponse<String>> deleteEmployee(
             @RequestParam Long employeeId) {
@@ -122,6 +130,7 @@ public class EmployeeController {
     }
 
     // Search employee by name
+    @Operation(summary = "Search employee by name")
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<Employee>>> searchEmployeeByName(
             @RequestParam String name) {

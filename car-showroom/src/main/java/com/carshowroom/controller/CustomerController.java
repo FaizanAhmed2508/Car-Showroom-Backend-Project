@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import com.carshowroom.response.CustomerPurchaseHistoryResponse;
 import org.springframework.data.domain.Page;
 import com.carshowroom.utility.CarShowroomUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+@Tag(name = "Customer", description = "Customer management endpoints")
 @RestController
 @RequestMapping("/api/customers")
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     // Register a new customer
+    @Operation(summary = "Register a new customer")
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<String>> registerCustomer(
             @Valid @RequestBody CustomerRequest request) {
@@ -38,6 +42,7 @@ public class CustomerController {
     }
 
     // Get customer by ID
+    @Operation(summary = "Get customer by ID")
     @GetMapping("/{customerId}")
     public ResponseEntity<ApiResponse<Customer>> getCustomerById(
             @PathVariable Long customerId) {
@@ -62,6 +67,7 @@ public class CustomerController {
     }
 
     // Get all customers
+    @Operation(summary = "Get all customers")
     @GetMapping
     public ResponseEntity<ApiResponse<List<Customer>>> getAllCustomers() {
 
@@ -75,6 +81,7 @@ public class CustomerController {
     }
 
     // Update customer details
+    @Operation(summary = "Update customer details")
     @PutMapping("/update/{customerId}")
     public ResponseEntity<ApiResponse<String>> updateCustomer(
             @PathVariable Long customerId,
@@ -100,6 +107,7 @@ public class CustomerController {
     }
 
     // Delete customer (soft delete)
+    @Operation(summary = "Delete customer")
     @DeleteMapping("/delete")
     public ResponseEntity<ApiResponse<String>> deleteCustomer(
             @RequestParam Long customerId) {
@@ -124,6 +132,7 @@ public class CustomerController {
     }
 
     // Search customer by name
+    @Operation(summary = "Search customer by name")
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<Customer>>> searchCustomerByName(
             @RequestParam String name) {
@@ -154,6 +163,7 @@ public class CustomerController {
         return ResponseEntity.ok(response);
     }
     // Get customer purchase history
+    @Operation(summary = "Get customer purchase history")
     @GetMapping("/{customerId}/purchase-history")
     public ResponseEntity<ApiResponse<CustomerPurchaseHistoryResponse>> getCustomerPurchaseHistory(
             @PathVariable Long customerId) {
@@ -178,6 +188,7 @@ public class CustomerController {
     }
 
     // Get all customers paginated
+    @Operation(summary = "Get all customers paginated")
     @GetMapping("/paginated")
     public ResponseEntity<ApiResponse<Page<Customer>>> getAllCustomersPaginated(
             @RequestParam(defaultValue = "0") int page,

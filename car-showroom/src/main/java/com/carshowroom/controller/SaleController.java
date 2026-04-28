@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import com.carshowroom.response.SalesReportResponse;
 import java.util.Map;
 import com.carshowroom.utility.CarShowroomUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+@Tag(name = "Sale", description = "Sale management endpoints")
 @RestController
 @RequestMapping("/api/sales")
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class SaleController {
     private final SaleService saleService;
 
     // Record a new sale
+    @Operation(summary = "Record a new sale")
     @PostMapping("/record")
     public ResponseEntity<ApiResponse<String>> recordSale(
             @Valid @RequestBody SaleRequest request) {
@@ -38,6 +42,7 @@ public class SaleController {
     }
 
     // Get sale by ID
+    @Operation(summary = "Get sale by ID")
     @GetMapping("/{saleId}")
     public ResponseEntity<ApiResponse<Sale>> getSaleById(@PathVariable Long saleId) {
 
@@ -61,6 +66,7 @@ public class SaleController {
     }
 
     // Get all sales
+    @Operation(summary = "Get all sales")
     @GetMapping
     public ResponseEntity<ApiResponse<List<Sale>>> getAllSales() {
 
@@ -74,6 +80,7 @@ public class SaleController {
     }
 
     // Get sales by customer
+    @Operation(summary = "Get sales by customer")
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<ApiResponse<List<Sale>>> getSalesByCustomer(
             @PathVariable Long customerId) {
@@ -98,6 +105,7 @@ public class SaleController {
     }
 
     // Get sales by employee
+    @Operation(summary = "Get sales by employee")
     @GetMapping("/employee/{employeeId}")
     public ResponseEntity<ApiResponse<List<Sale>>> getSalesByEmployee(
             @PathVariable Long employeeId) {
@@ -121,6 +129,7 @@ public class SaleController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
     // Get overall sales report
+    @Operation(summary = "Get overall sales report")
     @GetMapping("/report")
     public ResponseEntity<ApiResponse<SalesReportResponse>> getSalesReport() {
 
@@ -134,6 +143,7 @@ public class SaleController {
     }
 
     // Get sales report by employee
+    @Operation(summary = "Get sales report by employee")
     @GetMapping("/report/employee/{employeeId}")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getEmployeeSalesReport(
             @PathVariable Long employeeId) {
@@ -158,6 +168,7 @@ public class SaleController {
     }
 
     // Get sales by payment method
+    @Operation(summary = "Get sales by payment method")
     @GetMapping("/payment/{paymentMethod}")
     public ResponseEntity<ApiResponse<List<Sale>>> getSalesByPaymentMethod(
             @PathVariable String paymentMethod) {
